@@ -1,0 +1,38 @@
+{
+  "name": "tank-country",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "test:unit": "vitest run --config vitest.unit.config.js --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.js --coverage",
+    "test:e2e": "playwright test && npm run coverage:e2e",
+    "test:e2e:headed": "playwright test --headed",
+    "coverage:e2e": "nyc report && nyc check-coverage",
+    "coverage": "npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "overrides": {
+    "glob": "^14.0.6",
+    "minimatch": "^11.0.8"
+  },
+  "dependencies": {
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@vitest/coverage-v8": "^5.1.0",
+    "nyc": "^18.0.0",
+    "playwright": "1.65.1",
+    "vite": "^7.2.2",
+    "vite-plugin-istanbul": "^9.0.1",
+    "vitest": "^5.1.0"
+  }
+}

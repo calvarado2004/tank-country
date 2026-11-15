@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+test-results
+playwright-report
+.git
+.gitignore
+.DS_Store
+.qwen
+docs
+debug-*.mjs
+test-*.mjs
+*.log

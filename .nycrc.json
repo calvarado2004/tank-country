@@ -1,0 +1,19 @@
+{
+  "temp-dir": "coverage/e2e",
+  "report-dir": "coverage/e2e-report",
+  "include": [
+    "src/combat.js",
+    "src/capture.js",
+    "src/territory-core.js",
+    "src/infantry.js",
+    "src/artillery.js",
+    "src/battery.js"
+  ],
+  "reporter": ["text", "html", "lcov"],
+  "check-coverage": true,
+  "lines": 90,
+  "functions": 90,
+  "branches": 90,
+  "statements": 90,
+  "all": false
+}

@@ -1,0 +1,59 @@
+name: tank-country
+
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    init: true
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - dev_node_modules:/app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: ${CHOKIDAR_USEPOLLING:-false}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:5173/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+
+  web:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: runtime
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  test:
+    profiles: ["test"]
+    build:
+      context: .
+      target: test
+    command: ["sh", "-c", "npm run test:unit && npm run test:integration"]
+    volumes:
+      - ./coverage/docker:/app/coverage
+
+  e2e:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    init: true
+    shm_size: "1gb"
+    command: ["npm", "run", "test:e2e"]
+    volumes:
+      - ./coverage/docker:/app/coverage
+      - ./test-results:/app/test-results
+
+volumes:
+  dev_node_modules:

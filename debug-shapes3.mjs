@@ -1,0 +1,18 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ headless: true, executablePath: process.env.HOME + '/Library/Caches/ms-playwright/chromium-1223/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing' });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+page.on('pageerror', err => console.log('PAGEERROR', err.stack));
+await page.goto('http://localhost:5173/', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1000);
+await page.click('#btn-deploy');
+await page.waitForTimeout(3000);
+await page.evaluate(() => { document.getElementById('hud').style.display = 'none'; });
+await page.waitForTimeout(400);
+await page.screenshot({ path: '/tmp/tank-hide-hud.png' });
+await page.evaluate(() => { document.getElementById('hud').style.display = ''; document.querySelectorAll('.screen-fx').forEach(e => e.style.display = 'none'); });
+await page.waitForTimeout(400);
+await page.screenshot({ path: '/tmp/tank-hide-fx.png' });
+await page.evaluate(() => { document.querySelectorAll('.screen-fx').forEach(e => e.style.display = ''); document.querySelectorAll('#hud > *').forEach(e => e.style.display = 'none'); });
+await page.waitForTimeout(400);
+await page.screenshot({ path: '/tmp/tank-hide-hudchildren.png' });
+await browser.close();
